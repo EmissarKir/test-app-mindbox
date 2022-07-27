@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import styled, { ThemeProvider } from "styled-components";
+import GlobalStyle from "./styles/global";
+import { baseTheme } from "./styles/theme";
+import { AddTodoForm } from "./components/ui/addTodoForm/addTodoForm";
+import { Filter } from "./components/ui/filter/filter";
+import { TodoList } from "./components/ui/todoList";
+import { useTodos } from "./hooks/useTodos";
+import Title from "./components/common/title";
 
 function App() {
+  const { todos, sortTodos } = useTodos();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={baseTheme}>
+      <SContainer>
+        <Title label="Todos Mindbox" />
+        <AddTodoForm />
+        {todos.length !== 0 && <Filter count={todos.length} />}
+        <TodoList items={sortTodos} />
+      </SContainer>
+      <GlobalStyle />
+    </ThemeProvider>
   );
 }
 
 export default App;
+
+const SContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 600px;
+  margin: 0 auto;
+`;
